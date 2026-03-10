@@ -33,7 +33,7 @@ export async function signInAction(formData: FormData) {
         }
     })
 
-    redirect("/")
+    redirect("/dashboard")
 }           
        
 
