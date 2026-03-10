@@ -7,10 +7,9 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Eye, EyeOff, Mail,  Github} from "lucide-react"
-import {signUpAction as signUp} from "@/app/actions/auth"
+import {signInAction} from "@/app/actions/auth"
 
-export default function SignUpPage() {
-  const [name, setName] = useState("")
+export default function LoginPage() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
@@ -25,25 +24,12 @@ export default function SignUpPage() {
       >
         <div className="bg-white rounded-2xl shadow-xl p-8 space-y-6">
           <div className="text-center space-y-2">
-            <h1 className="text-3xl font-bold tracking-tighter">Create an Account</h1>
+            <h1 className="text-3xl font-bold tracking-tighter">Welcome Back</h1>
             <p className="text-muted-foreground">
-              Please fill in the details to create your account
+              Please sign in to your account
             </p>
           </div>
-          <form className="space-y-6" action={signUp}>
-            <div className="space-y-2">
-              <Label htmlFor="name">Name</Label>
-              <Input
-                id="name"
-                name="name"
-                type="text"
-                placeholder="John Doe"
-                value={name}
-                required
-                onChange={(e) => setName(e.target.value)} 
-              />
-            </div>
-        
+          <form className="space-y-4" action={signInAction}>
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -77,8 +63,17 @@ export default function SignUpPage() {
                 </button>
               </div> 
             </div>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <Checkbox id="remember" />
+                <Label htmlFor="remember">Remember me</Label>
+              </div>
+              <a href="" className="text-sm text-primary hover:underline">
+                Forgot password?
+              </a>
+            </div>
             <Button type="submit" className="w-full">
-              Sign Up
+              Sign In
             </Button>
           </form>
           <div className="relative">
@@ -100,9 +95,9 @@ export default function SignUpPage() {
               </Button>
             </div>
             <div className="text-center text-sm text-muted-foreground">
-              Already have an account?{' '}
-              <a href="/login" className="text-primary hover:underline">
-                Sign in
+              Don't have an account?{' '}
+              <a href="/signup" className="text-primary hover:underline">
+                Sign up
               </a>
           </div>
         </div>
