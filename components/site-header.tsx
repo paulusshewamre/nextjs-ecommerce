@@ -25,9 +25,11 @@ export function SiteHeader() {
             <ShoppingCart className="size-4" />
                 Cart
           </Button>
-          <Button variant="outline" size="sm">
+          <form action={"/login"}>
+            <Button  variant="outline" size="sm">
               Login
-          </Button>
+            </Button>
+          </form>
           <ModeToggle />
         </div>
       </div>
