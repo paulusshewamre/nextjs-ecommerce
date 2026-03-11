@@ -15,8 +15,15 @@ export default function RootLayout({
   return (
     <html lang="en" className={cn("font-sans", geist.variable)}>
       <body>
-        <ThemeProvider>
-          <TooltipProvider>{children}</TooltipProvider>
+        <ThemeProvider 
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+            <TooltipProvider>
+                {children}
+            </TooltipProvider>
         </ThemeProvider>
       </body>
     </html>
