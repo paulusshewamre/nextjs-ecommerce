@@ -2,6 +2,9 @@ import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { SidebarTrigger } from "@/components/ui/sidebar"
 import { ModeToggle } from "@/components/ui/mode-toggle"
+import Link from "next/link"
+import { Logo } from "@/components/logo"
+import { ShoppingCart } from "lucide-react"
 
 export function SiteHeader() {
   return (
@@ -12,8 +15,19 @@ export function SiteHeader() {
           orientation="vertical"
           className="mx-2 data-[orientation=vertical]:h-4"
         />
-        <h1 className="text-base font-medium">Documents</h1>
+        <Link href="/" className="flex items-center gap-2">
+            <Logo />
+        </Link>
+        
+        
         <div className="ml-auto flex items-center gap-2">
+          <Button size="sm">
+            <ShoppingCart className="size-4" />
+                Cart
+          </Button>
+          <Button variant="outline" size="sm">
+              Login
+          </Button>
           <ModeToggle />
         </div>
       </div>
