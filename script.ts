@@ -1,72 +1,94 @@
-import { prisma } from "./lib/prisma";
+import { prisma } from "./lib/prisma"
 
 async function main() {
-  console.log("Seeding database...");
+  console.log("🌱 Seeding database...")
 
-  // 1️⃣ Create multiple users
-  await prisma.user.createMany({
+  // Categories
+  const categories = await prisma.category.createMany({
     data: [
-      { name: "Alice", email: "alice@ecom.io" },
-      { name: "Bob", email: "bob@ecom.io" },
-      { name: "Charlie", email: "charlie@ecom.io" },
+      { name: "Electronics", slug: "electronics" },
+      { name: "Clothing", slug: "clothing" },
+      { name: "Home", slug: "home" },
+      { name: "Books", slug: "books" },
+      { name: "Sports", slug: "sports" },
+      { name: "Accessories", slug: "accessories" },
     ],
     skipDuplicates: true,
-  });
+  })
 
-  // Fetch all users to get their UUIDs
-  const allUsers = await prisma.user.findMany();
-  console.log("Users created:", allUsers.map(u => ({ id: u.id, email: u.email })));
+  const allCategories = await prisma.category.findMany()
 
-  // 2️⃣ Create products
-  await prisma.product.createMany({
-    data: [
-      { name: "Laptop", price: 1200 },
-      { name: "Mouse", price: 25 },
-      { name: "Keyboard", price: 45 },
-    ],
-    skipDuplicates: true,
-  });
+  const productNames = [
+    "MacBook Pro",
+    "Gaming Mouse",
+    "Mechanical Keyboard",
+    "4K Monitor",
+    "Noise Cancelling Headphones",
+    "USB-C Hub",
+    "Classic Hoodie",
+    "Slim Fit Jeans",
+    "Running Shoes",
+    "Winter Jacket",
+    "Baseball Cap",
+    "Leather Wallet",
+    "Desk Lamp",
+    "Office Chair",
+    "Coffee Maker",
+    "Blender",
+    "Cookware Set",
+    "Yoga Mat",
+    "Dumbbells",
+    "Basketball",
+    "Football",
+    "Smart Watch",
+    "Wireless Charger",
+    "Bluetooth Speaker",
+    "Tablet Stand",
+    "Laptop Sleeve",
+    "Backpack",
+    "Sunglasses",
+    "Water Bottle",
+    "Travel Mug"
+  ]
 
-  const allProducts = await prisma.product.findMany();
-  console.log("Products created:", allProducts.map(p => ({ id: p.id, name: p.name })));
+  for (let i = 0; i < productNames.length; i++) {
 
-  // 3️⃣ Create orders for each user
-  for (const user of allUsers) {
-    // Assign a random product for each order
-    const product = allProducts[Math.floor(Math.random() * allProducts.length)];
-    await prisma.order.create({
+    const category =
+      allCategories[Math.floor(Math.random() * allCategories.length)]
+
+    const product = await prisma.product.create({
       data: {
-        quantity: 1 + Math.floor(Math.random() * 3), // random 1-3
-        userId: user.id, // ✅ UUID
-        productId: product.id, // ✅ UUID
+        name: productNames[i],
+        description: "High quality product built for everyday use.",
+        price: Math.floor(Math.random() * 400) + 50,
+        featured: i < 5, // first 5 products featured
+        categoryId: category.id,
       },
-    });
-  }
-  console.log("Orders created for all users");
+    })
 
-  // 4️⃣ (Removed session creation for now — no authentication yet)
-
-  // 5️⃣ Fetch all users with orders and products
-  const result = await prisma.user.findMany({
-    include: {
-      orders: {
-        include: {
-          product: true,
+    // add images
+    await prisma.productImage.createMany({
+      data: [
+        {
+          url: `/products/product${(i % 10) + 1}.jpg`,
+          productId: product.id,
         },
-      },
-    },
-  });
+        {
+          url: `/products/product${(i % 10) + 1}-2.jpg`,
+          productId: product.id,
+        },
+      ],
+    })
+  }
 
-  console.log("Seed result:", JSON.stringify(result, null, 2));
+  console.log("✅ Database seeded successfully")
 }
 
 main()
-  .then(async () => {
-    console.log("Seeding completed!");
-    await prisma.$disconnect();
+  .catch((e) => {
+    console.error(e)
+    process.exit(1)
   })
-  .catch(async (e) => {
-    console.error(e);
-    await prisma.$disconnect();
-    process.exit(1);
-  });
+  .finally(async () => {
+    await prisma.$disconnect()
+  })

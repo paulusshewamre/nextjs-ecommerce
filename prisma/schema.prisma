@@ -25,19 +25,55 @@ model User {
 }
 
 model Product {
-  id     String  @id @default(uuid())
-  name   String
-  price  Float
-  orders Order[]
+  id          String         @id @default(uuid())
+  name        String
+  description String?
+  price       Float
+  featured    Boolean        @default(false)
+
+  categoryId  String
+  category    Category       @relation(fields: [categoryId], references: [id])
+
+  images      ProductImage[]
+
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  orderItems  OrderItem[]
+}
+
+model ProductImage {
+  id        String  @id @default(uuid())
+  url       String
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
 }
 
 model Order {
-  id        String  @id @default(uuid())
-  quantity  Int
-  user      User    @relation(fields: [userId], references: [id])
+  id        String      @id @default(uuid())
   userId    String
-  product   Product @relation(fields: [productId], references: [id])
+  user      User        @relation(fields: [userId], references: [id])
+  items     OrderItem[]
+  total     Float
+  status    String      @default("pending")
+  createdAt DateTime    @default(now())
+}
+
+model OrderItem {
+  id        String  @id @default(uuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id])
   productId String
+  product   Product @relation(fields: [productId], references: [id])
+  quantity  Int
+  price     Float
+}
+
+model Category {
+  id       String    @id @default(uuid())
+  name     String
+  slug     String    @unique
+  products Product[]
 }
 
 model Session {
