@@ -7,12 +7,16 @@ import { FeaturedProducts } from "@/components/my/featured-products"
 import { DealBanner } from "@/components/my/deal-banner"
 import { TrustSection } from "@/components/my/trust-section"
 import { Footer } from "@/components/my/footer"
+import { getCategories } from "@/lib/db/categories"
 
 
 export default async function Page() {
   const session = await auth.api.getSession({
     headers: await headers(),
   })
+  
+  const categories = await getCategories()
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -20,7 +24,7 @@ export default async function Page() {
         <HeroSection />
       </main>
       <section>
-        <CategoryGrid />
+        <CategoryGrid categories={categories} />
         <FeaturedProducts />
         <DealBanner />
         <TrustSection />

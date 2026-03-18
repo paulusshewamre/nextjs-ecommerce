@@ -1,48 +1,16 @@
 import Image from "next/image"
 import Link from "next/link"
 
-const categories = [
-  {
-    name: "Electronics",
-    href: "/categories/electronics",
-    image:
-      "https://images.unsplash.com/photo-1518779578993-ec3579fee39f",
-  },
-  {
-    name: "Shoes",
-    href: "/categories/shoes",
-    image:
-      "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77",
-  },
-  {
-    name: "Watches",
-    href: "/categories/watches",
-    image:
-      "https://images.unsplash.com/photo-1523275335684-37898b6baf30",
-  },
-  {
-    name: "Headphones",
-    href: "/categories/headphones",
-    image:
-      "https://images.unsplash.com/photo-1518444028785-8fbcd101ebb9",
-  },
-  {
-    name: "Fashion",
-    href: "/categories/fashion",
-    image:
-      "https://images.unsplash.com/photo-1520975922284-6b4c6f8c1e2b",
-  },
-  {
-    name: "Accessories",
-    href: "/categories/accessories",
-    image:
-      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e",
-  },
-]
+type Category = {
+  id: string
+  name: string
+  slug: string
+}
 
-export function CategoryGrid() {
+export function CategoryGrid({ categories }: { categories: Category[] }) {
   return (
     <section className="mx-auto max-w-7xl px-6 py-16">
+
       <div className="mb-10 flex items-center justify-between">
         <h2 className="text-2xl font-semibold md:text-3xl">
           Shop by Category
@@ -51,13 +19,15 @@ export function CategoryGrid() {
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {categories.map((category) => (
+
           <Link
-            key={category.name}
-            href={category.href}
+            key={category.id}
+            href={`/categories/${category.slug}`}
             className="group relative overflow-hidden rounded-xl border"
           >
+
             <Image
-              src={category.image}
+              src={`/categories/${category.slug}.jpg`}
               alt={category.name}
               width={600}
               height={400}
@@ -71,9 +41,12 @@ export function CategoryGrid() {
                 {category.name}
               </span>
             </div>
+
           </Link>
+
         ))}
       </div>
+
     </section>
   )
 }
