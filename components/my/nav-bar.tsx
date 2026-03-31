@@ -38,11 +38,11 @@ export function Navbar() {
 
         {/* Search */}
         <div className="hidden w-72 items-center gap-2 md:flex">
-          <Search className="size-4 text-muted-foreground" />
           <Input
             placeholder="Search products..."
             className="h-9"
           />
+          <Search className="size-4 text-muted-foreground" />
         </div>
 
         {/* Actions */}

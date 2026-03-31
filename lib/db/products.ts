@@ -63,3 +63,24 @@ export async function getFilteredProducts(filter: ProductFilter) {
         : { createdAt: "desc" },
   })
 }
+
+
+export async function createProduct(data: {
+  name: string;
+  description?: string;
+  price: number;
+  categoryId: string;
+  images: string[];
+}) {
+  return prisma.product.create({
+    data: {
+      name: data.name,
+      description: data.description,
+      price: data.price,
+      categoryId: data.categoryId,
+      images: {
+        create: data.images.map((url) => ({ url })),
+      },
+    },
+  });
+}
